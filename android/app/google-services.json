@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "216812656840",
+    "project_id": "mealdealapp-43b19",
+    "storage_bucket": "mealdealapp-43b19.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:216812656840:android:437f0f48b8649e274bedfd",
+        "android_client_info": {
+          "package_name": "com.minor.meal_deal_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQYw6_oZi_6mZJ49_FOiDUso1fbcL-Jzo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
