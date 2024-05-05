@@ -9,28 +9,45 @@ class MyDrawer extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          const DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.green,
+          DrawerHeader(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("lib/assets/images/logo_ver1.png"),
+                fit: BoxFit.cover,
+              ),
+              color: Colors.white,
             ),
-            child: Text('Drawer Header'),
+            child: Container(),
           ),
           ListTile(
+            leading: const Icon(Icons.menu_book),
             title: const Text('Menu'),
             onTap: () {
               Navigator.pushReplacementNamed(context, '/menu');
             },
           ),
           ListTile(
+            leading: const Icon(Icons.history),
             title: const Text('Orders History'),
             onTap: () {
               Navigator.pushReplacementNamed(context, '/orderHistory');
             },
           ),
           ListTile(
+            leading: const Icon(Icons.settings),
             title: const Text('Settings'),
             onTap: () {
               Navigator.pushReplacementNamed(context, '/settings');
+            },
+          ),
+          // SizedBox(
+          //   height: 150,
+          // ),
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: const Text('Log out'),
+            onTap: () {
+              Navigator.pushReplacementNamed(context, '/page1');
             },
           ),
         ],
