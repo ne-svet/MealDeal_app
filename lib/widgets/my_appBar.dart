@@ -8,9 +8,17 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar();
+    return AppBar(
+      title: const Text("MEAL DEAL", style: TextStyle(color: Colors.white)),
+      centerTitle: true,
+      iconTheme: const IconThemeData(color: Colors.white),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.shopping_cart),
+          onPressed: () {},
+        ),
+      ],
+      backgroundColor: Colors.black,
+    );
   }
-
-
 }
-

@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
         '/cart': (context) => const CartScreen(),
         '/payment': (context) => const PaymentScreen(),
       },
+      debugShowCheckedModeBanner: false,
     );
   }
 }
