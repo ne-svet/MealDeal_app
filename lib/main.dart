@@ -8,6 +8,8 @@ import 'package:meal_deal_app/screens/menu_screen.dart';
 import 'package:meal_deal_app/screens/payment_screen.dart';
 import 'package:meal_deal_app/screens/settings_screen.dart';
 
+import 'firebase_options.dart';
+
 void main() async {
 
   //инициализация Firebase
