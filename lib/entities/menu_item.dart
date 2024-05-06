@@ -43,7 +43,7 @@ MenuItem (
       map['link'],
       map['location'],
       map['on_sale'],
-      map['price'],
+      (map['price']).toDouble(), // Преобразование int в double
       map['quantity'],
     );
 

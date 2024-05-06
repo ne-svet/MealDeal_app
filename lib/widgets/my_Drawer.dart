@@ -40,9 +40,9 @@ class MyDrawer extends StatelessWidget {
               Navigator.pushReplacementNamed(context, '/settings');
             },
           ),
-          // SizedBox(
-          //   height: 150,
-          // ),
+          SizedBox(
+            height: 150,
+          ),
           ListTile(
             leading: const Icon(Icons.logout),
             title: const Text('Log out'),
