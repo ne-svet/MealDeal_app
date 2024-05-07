@@ -40,7 +40,7 @@ class MyDrawer extends StatelessWidget {
               Navigator.pushReplacementNamed(context, '/settings');
             },
           ),
-          SizedBox(
+          const SizedBox(
             height: 150,
           ),
           ListTile(
