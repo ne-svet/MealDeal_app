@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meal_deal_app/model/filter_operations.dart';
-import 'package:meal_deal_app/widgets/MyBottomAppBar.dart';
+import 'package:meal_deal_app/widgets/my_bottom_appBar.dart';
 
 import '../widgets/filter_chip_widget.dart';
 import '../widgets/filter_title.dart';
@@ -62,6 +62,7 @@ class _FilterScreenState extends State<FilterScreen> {
           GreenStripe(
             screenName: "Filters",
             screenIcon: null,
+            onPressedScreenIcon: null,
           ),
           Expanded(
               child: SingleChildScrollView(

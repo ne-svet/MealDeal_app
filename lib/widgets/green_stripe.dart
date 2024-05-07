@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 class GreenStripe extends StatelessWidget {
   final screenName;
   final IconData? screenIcon;
+  //final IconData? backIcon;
+  final VoidCallback? onPressedScreenIcon;
 
-  GreenStripe({super.key, required this.screenName, required this.screenIcon});
+  GreenStripe({super.key, required this.screenName, this.screenIcon,required this.onPressedScreenIcon});
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +28,7 @@ class GreenStripe extends StatelessWidget {
             ),
             if (screenIcon != null)
               IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/filter');
-                },
+                onPressed: onPressedScreenIcon,
                 color: Colors.white,
                 icon: Icon(screenIcon),
               )

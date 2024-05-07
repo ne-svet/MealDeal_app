@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:meal_deal_app/provider/menuItem_provider.dart';
+import 'package:meal_deal_app/provider/menu_item_provider.dart';
 import 'package:meal_deal_app/widgets/green_stripe.dart';
 import 'package:meal_deal_app/widgets/my_Drawer.dart';
 import 'package:meal_deal_app/widgets/my_appBar.dart';
 import 'package:provider/provider.dart';
 
 import '../entities/menu_item.dart';
-import '../widgets/menuItem_widget.dart';
+import '../widgets/menu_item_widget.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -29,6 +29,9 @@ class _MenuScreenState extends State<MenuScreen> {
           GreenStripe(
             screenName: "Menu",
             screenIcon: Icons.filter_list_alt,
+            onPressedScreenIcon: () {
+              Navigator.pushNamed(context, '/filter');
+            },
           ),
           Expanded(
             child: SingleChildScrollView(
@@ -43,7 +46,7 @@ class _MenuScreenState extends State<MenuScreen> {
                         children: snapshot.data!.map((menuItem) {
                           Column col = Column(
                             children: [
-                              MenuItemWidget(menuItem: menuItem),
+                              MenuItemWidget(menuItem: menuItem, menuItemProvider: Provider.of<MenuItemProvider>(context)),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 20.0),

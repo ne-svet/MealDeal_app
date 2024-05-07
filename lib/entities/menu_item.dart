@@ -50,7 +50,36 @@ MenuItem (
     return menuItem;
   }
 
+  //переписываем методы сравнения
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
 
+    return other is MenuItem &&
+        other.category == category &&
+        other.name == name &&
+        other.description == description &&
+        other.imageUrl == imageUrl &&
+        other.restaurant == restaurant &&
+        other.link == link &&
+        other.location == location &&
+        other.onSale == onSale &&
+        other.price == price &&
+        other.quantity == quantity;
+  }
 
+  @override
+  int get hashCode {
+    return category.hashCode ^
+    name.hashCode ^
+    description.hashCode ^
+    imageUrl.hashCode ^
+    restaurant.hashCode ^
+    link.hashCode ^
+    location.hashCode ^
+    onSale.hashCode ^
+    price.hashCode ^
+    quantity.hashCode;
+  }
 
 }

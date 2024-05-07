@@ -1,15 +1,108 @@
 import 'package:flutter/material.dart';
+import 'package:meal_deal_app/entities/cart_item.dart';
+import 'package:meal_deal_app/provider/menu_item_provider.dart'; // Импортируем ваш провайдер
+import 'package:meal_deal_app/widgets/cart_widget.dart';
+import 'package:meal_deal_app/widgets/my_appBar.dart';
+import 'package:provider/provider.dart';
 
-class CartScreen extends StatefulWidget {
-  const CartScreen({super.key});
+import '../widgets/green_stripe.dart';
+import '../widgets/my_Drawer.dart';
 
-  @override
-  State<CartScreen> createState() => _CartScreenState();
-}
+class CartScreen extends StatelessWidget {
+  const CartScreen({Key? key});
 
-class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    final menuItemProvider =
+        Provider.of<MenuItemProvider>(context); // Получаем экземпляр провайдера
+
+    return Scaffold(
+      appBar: MyAppBar(),
+      drawer: MyDrawer(),
+      // Используем Consumer для обновления UI при изменении провайдера
+      body: Consumer<MenuItemProvider>(
+        builder: (context, menuItemProvider, child) {
+          // Получаем корзину из провайдера
+          final userCart = menuItemProvider.cart;
+
+          return Column(children: [
+            //зеленое меню
+            GreenStripe(
+              screenName: "Cart",
+              screenIcon: Icons.delete,
+              onPressedScreenIcon: () {
+                //подтверждение удаления
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text("Are you sure you want to clear the cart?"),
+                    actions: [
+                      //отмена
+                      TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text("Cancel")),
+                      //удалить
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            menuItemProvider.clearCart();
+                          },
+                          child: Text("Yes")),
+                    ],
+                  ),
+                );
+              },
+            ),
+            // продукты в корзине
+            Expanded(
+              child: Column(
+                children: [
+                  userCart.isEmpty
+                      ? Column(
+                          children: [
+                            SizedBox(
+                              height: 50,
+                            ),
+                            Center(child: const Text("Cart is empty...")),
+                          ],
+                        )
+                      : Expanded(
+                          child: ListView.builder(
+                              itemCount: userCart.length,
+                              itemBuilder: (context, index) {
+                                //товар из корзины
+                                final cartItem = userCart[index];
+
+                                //возвращаем виджет корзины
+                                return CartWidget(cartItem: cartItem);
+                              }),
+                        ),
+                ],
+              ),
+            ),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 50),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  backgroundColor: Color(0xFF62BD5C),
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/payment');
+                },
+                child: Text(
+                  "Go to checkout",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Colors.white),
+                )),
+            SizedBox(
+              height: 20,
+            )
+          ]);
+        },
+      ),
+    );
   }
 }
