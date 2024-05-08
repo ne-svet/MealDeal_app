@@ -1,9 +1,32 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:meal_deal_app/model/firebase_auth_services.dart';
 import 'package:meal_deal_app/widgets/form_container_widget.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  final FireBaseAuthService _auth = FireBaseAuthService();
+
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _surnameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+//Очищает контроллеры
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _surnameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,20 +46,36 @@ class SignUpScreen extends StatelessWidget {
               ),
               // Виджет с формой для аутентицикации
               FormContainerWidget(
-                  hintText: 'User name', isPasswordField: false),
+                  controller: _nameController,
+                  hintText: 'Name',
+                  isPasswordField: false),
               const SizedBox(
                 height: 15,
               ),
-              FormContainerWidget(hintText: 'Email', isPasswordField: false),
+              FormContainerWidget(
+                  controller: _surnameController,
+                  hintText: 'Surname',
+                  isPasswordField: false),
+              const SizedBox(
+                height: 15,
+              ),
+              FormContainerWidget(
+                  controller: _emailController,
+                  hintText: 'Email',
+                  isPasswordField: false),
               const SizedBox(
                 height: 15,
               ),
               // Виджет с формой для аутентицикации
-              FormContainerWidget(hintText: 'Password', isPasswordField: true),
+              FormContainerWidget(
+                  controller: _passwordController,
+                  hintText: 'Password',
+                  isPasswordField: true),
               const SizedBox(
                 height: 30,
               ),
               GestureDetector(
+                onTap: _signUp,
                 child: Container(
                   width: double.infinity,
                   height: 50,
@@ -79,5 +118,24 @@ class SignUpScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+// отправляем данные для регистрации в FireBase
+  void _signUp() async {
+    // помещаем текст из контроллеров в отдельные переменные
+    String name = _nameController.text;
+    String surname = _surnameController.text;
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    User? user = await _auth.signUpWithEmailAndPassword(email, password);
+
+    // проверяем user на Null
+    if (user != null) {
+      print("User is seccessfully created");
+      Navigator.pushReplacementNamed(context, "/menu");
+    } else {
+      print("Some error happend");
+    }
   }
 }
