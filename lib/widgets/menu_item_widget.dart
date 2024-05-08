@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:meal_deal_app/entities/menu_item.dart';
 import 'package:meal_deal_app/provider/menu_item_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MenuItemWidget extends StatelessWidget {
+
+
+  final MenuItem menuItem;
+  final MenuItemProvider menuItemProvider;
+
   //конструктор
   const MenuItemWidget({
     Key? key,
@@ -10,8 +16,15 @@ class MenuItemWidget extends StatelessWidget {
     required this.menuItemProvider,
   }) : super(key: key);
 
-  final MenuItem menuItem;
-  final MenuItemProvider menuItemProvider;
+
+  Future<void> _launchInBrowser(Uri url) async {
+    if (!await launchUrl(
+      url,
+      mode: LaunchMode.externalApplication,
+    )) {
+      throw Exception('Could not launch $url');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,17 +84,23 @@ class MenuItemWidget extends StatelessWidget {
                       height: 10,
                     ),
                     // Ресторан
-                    Text(
-                      menuItem.restaurant,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.grey),
+                    InkWell(
+                      onTap: () => launchUrl(Uri.parse(menuItem.link)),
+                      child: Text(
+                        "Restaurant: ${menuItem.restaurant}",
+                        style: const TextStyle(
+                            decoration: TextDecoration.underline,
+                            fontWeight: FontWeight.bold,
+                            //fontSize: 18,
+                            color: Colors.grey),
+                      ),
                     ),
                     const SizedBox(
                       height: 5,
                     ),
                     // Локация
                     Text(
-                      menuItem.location,
+                      "Location: ${menuItem.location}",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -113,7 +132,9 @@ class MenuItemWidget extends StatelessWidget {
                           const Color(0xFF62BD5C)),
                     ),
                     //добавляем в корзину
-                    onPressed: () => menuItemProvider.addToCart(menuItem),
+                    onPressed: () {
+                      menuItemProvider.addToCart(menuItem);
+                    },
                     child: const Text(
                       "ADD",
                       style: TextStyle(

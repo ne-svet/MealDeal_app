@@ -2,6 +2,7 @@ import '../entities/menu_item.dart';
 import '../provider/fireStore_controller.dart';
 
 class FilterOperations {
+
   final FirestoreController firestoreController = FirestoreController();
 
   // Универсальная функция для извлечения уникальных значений из списка объектов MenuItem

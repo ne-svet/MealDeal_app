@@ -23,6 +23,11 @@ class _FilterScreenState extends State<FilterScreen> {
   Set<String> restaurants = {};
   Set<String> locations = {};
 
+  List<String> _selectedCategories = [];
+  List<String> _selectedRestaurants  = [];
+  List<String> _selectedLocations  = [];
+  List? selectedPriceRange;
+
   @override
   void initState() {
     super.initState();
@@ -49,6 +54,9 @@ class _FilterScreenState extends State<FilterScreen> {
         locations = value.toSet();
       });
     });
+
+    //заполняе лист с фильтрами
+    _selectedCategories = <String>[];
   }
 
   @override
@@ -68,15 +76,15 @@ class _FilterScreenState extends State<FilterScreen> {
               child: SingleChildScrollView(
             child: Column(
               children: [
-                FilterWidget(filterName: "Category", categories: categories),
+                FilterWidget(filterName: "Category", filterItems: categories),
                 SizedBox(
                   height: 10,
                 ),
-                FilterWidget(filterName: "Restaurant", categories: restaurants),
+                FilterWidget(filterName: "Restaurant", filterItems: restaurants),
                 SizedBox(
                   height: 10,
                 ),
-                FilterWidget(filterName: "Location", categories: locations),
+                FilterWidget(filterName: "Location", filterItems: locations),
                 SizedBox(
                   height: 10,
                 ),

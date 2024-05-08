@@ -9,15 +9,23 @@ import '../entities/menu_item.dart';
 import '../widgets/menu_item_widget.dart';
 
 class MenuScreen extends StatefulWidget {
-  const MenuScreen({super.key});
+  MenuScreen({super.key});
+
+
 
   @override
   State<MenuScreen> createState() => _MenuScreenState();
 }
 
 class _MenuScreenState extends State<MenuScreen> {
+
+  // //контроллер прокрутки. Чтоб при нажатии на ADD, эран был на том же месте
+  // ScrollController _controller = ScrollController();
+
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: MyAppBar(),
       drawer: MyDrawer(),
@@ -46,7 +54,10 @@ class _MenuScreenState extends State<MenuScreen> {
                         children: snapshot.data!.map((menuItem) {
                           Column col = Column(
                             children: [
-                              MenuItemWidget(menuItem: menuItem, menuItemProvider: Provider.of<MenuItemProvider>(context)),
+                              MenuItemWidget(
+                                  menuItem: menuItem,
+                                  menuItemProvider: Provider.of<MenuItemProvider>(context),
+                              ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 20.0),

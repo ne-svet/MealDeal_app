@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
+import 'package:provider/provider.dart';
 
+import '../provider/menu_item_provider.dart';
 import '../widgets/green_stripe.dart';
 import '../widgets/my_Drawer.dart';
 import '../widgets/my_appBar.dart';
@@ -44,13 +46,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
           actions: [
             //отмена
             TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text("Cancel")),
+                onPressed: () => Navigator.pop(context), child: Text("Cancel")),
             //удалить
             TextButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, '/confirmation');
+                  Navigator.pushNamed(context, '/confirmation').then((_) {
+                    // Вызываем метод очистки корзины и обновляем состояние виджета
+                    Provider.of<MenuItemProvider>(context, listen: false).clearCart();
+                    // Можно добавить setState(), если виджет не обновляется автоматически
+                  });
                 },
                 child: Text("Yes")),
           ],

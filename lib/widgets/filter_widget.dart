@@ -5,9 +5,9 @@ import 'filter_title.dart';
 
 class FilterWidget extends StatelessWidget {
   const FilterWidget(
-      {super.key, required this.categories, required this.filterName});
+      {super.key, required this.filterItems, required this.filterName});
 
-  final Set<String> categories;
+  final Set<String> filterItems;
   final String filterName;
 
   @override
@@ -30,7 +30,7 @@ class FilterWidget extends StatelessWidget {
               child: Wrap(
                 spacing: 10,
                 runSpacing: 3,
-                children: categories.map((category) {
+                children: filterItems.map((category) {
                   return FilterChipWidget(chipName: category);
                 }).toList(),
               ),

@@ -2,7 +2,6 @@ import 'package:meal_deal_app/entities/menu_item.dart';
 
 //корзина
 class CartItem {
-
   MenuItem menuItem;
   int quantity;
 
@@ -11,7 +10,4 @@ class CartItem {
   double get totalPrice {
     return menuItem.price * quantity;
   }
-
-
-
 }

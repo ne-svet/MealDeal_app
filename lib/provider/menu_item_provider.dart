@@ -5,6 +5,8 @@ import 'package:meal_deal_app/entities/menu_item.dart';
 import 'package:meal_deal_app/provider/fireStore_controller.dart';
 
 import '../entities/cart_item.dart';
+import '../entities/user_order.dart';
+import '../entities/order_items.dart';
 
 class MenuItemProvider extends ChangeNotifier {
   //Firestore
@@ -19,6 +21,9 @@ class MenuItemProvider extends ChangeNotifier {
   //работа с товарами
   late MenuItem menuItem;
 
+  //текущий номер заказа
+  int currentOrderNumber = 1;
+
   //user cart
   final List<CartItem> _cart = [];
 
@@ -32,7 +37,8 @@ class MenuItemProvider extends ChangeNotifier {
   //----------------------------------------------------------------
   void addToCart(MenuItem menuItem) {
     // Проверяем, существует ли уже такой товар в корзине
-    CartItem? existingCartItem = _cart.firstWhereOrNull((item) => item.menuItem == menuItem);
+    CartItem? existingCartItem =
+    _cart.firstWhereOrNull((item) => item.menuItem == menuItem);
 
     // Если товар уже существует - увеличиваем количество
     if (existingCartItem != null) {
@@ -45,7 +51,6 @@ class MenuItemProvider extends ChangeNotifier {
     // Оповещаем слушателей для обновления UI
     notifyListeners();
   }
-
 
 //----------------------------------------------------------------
   //remove from cart
@@ -101,41 +106,95 @@ class MenuItemProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  //---------------------------------------------------------------
+  // получить номер заказа
+  //---------------------------------------------------------------
+  String getOrderNumber() {
+    String orderPrefix = 'MD - '; // Префикс заказа
+    String newOrderNumber = currentOrderNumber.toString().padLeft(
+        8, '0'); // Нумерация с ведущими нулями до 8 цифр
+    currentOrderNumber++;
+    return '$orderPrefix$newOrderNumber';
+  }
+
   //----------------------------------------------------------------
 //generate a receipt
   //----------------------------------------------------------------
-String displayCartReceipt(){
-    //долгий стринг
-final receipt = StringBuffer();
-receipt.writeln('Here is you receipt.');
-receipt.writeln();
+  UserOrder createOrder() {
+    String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(
+        DateTime.now());
 
-String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now());
-
-receipt.writeln(formattedDate);
-receipt.writeln();
-receipt.writeln('-----------------');
-
-for(final cartItem in _cart) {
-  receipt.writeln(
-      "${cartItem.quantity} x ${cartItem.menuItem.name} - ${_formatPrice(
-          cartItem.menuItem.price)}");
-  receipt.writeln();
-}
-  receipt.writeln('-----------------');
-  receipt.writeln();
-  receipt.writeln("Total items: ${getTotalItemCount()}");
-  receipt.writeln("Total price: ${_formatPrice(getTotalPrice())}");
-
-  return receipt.toString();
+    List<OrderItem> orderItems = _cart.map((cartItem) {
+      return OrderItem(
+        restaurant: cartItem.menuItem.restaurant,
+        location: cartItem.menuItem.location,
+        itemName: cartItem.menuItem.name,
+        price: cartItem.menuItem.price,
+        quantity: cartItem.quantity,
+      );
+    }).toList();
 
 
-}
+     UserOrder order = UserOrder(
+        orderNumber: getOrderNumber(),
+        formattedDate: formattedDate,
+        items: orderItems,
+        totalItems: getTotalItemCount(),
+        totalPrice: _formatPrice(getTotalPrice()),
+
+    );
+
+    return order;
+
+
+    //   //долгий стринг
+    //   final receipt = StringBuffer();
+    //   final orderNumber = getOrderNumber();
+    //   receipt.writeln('Here is you receipt.');
+    //   receipt.writeln();
+    //
+    //   String formattedDate =
+    //       DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now());
+    //
+    //   receipt.writeln(formattedDate);
+    //   receipt.writeln('Order Number: $orderNumber');
+    //   receipt.writeln();
+    //   receipt.writeln('-----------------');
+    //
+    //   for (final cartItem in _cart) {
+    //     receipt.writeln("Restaurant: ${cartItem.menuItem.restaurant}");
+    //     receipt.writeln("Location: ${cartItem.menuItem.location}");
+    //     receipt.writeln();
+    //     receipt.writeln(
+    //         "${cartItem.quantity} x ${cartItem.menuItem.name} - ${_formatPrice(cartItem.menuItem.price)}");
+    //
+    //     receipt.writeln('-----------------');
+    //   }
+    //
+    //   receipt.writeln();
+    //   receipt.writeln("Total items: ${getTotalItemCount()}");
+    //   receipt.writeln("Total price: ${_formatPrice(getTotalPrice())}");
+    //
+    //
+    //   return receipt.toString();
+  }
 
   //----------------------------------------------------------------
 //format double into money
   //----------------------------------------------------------------
-String _formatPrice(double price){
+  String _formatPrice(double price) {
     return "€ ${price.toStringAsFixed(2)}";
-}
+  }
+
+  //  добавляет новые записи в историю
+  Future<void> addOrder(UserOrder userOrder) async {
+
+    await firestoreController.saveOrder(userOrder);
+    notifyListeners(); //оповещаем слушателей, когда история обновляется
+  }
+
+  //получение данных
+  Future<List<UserOrder>> getAllOrderHistory() async {
+    return firestoreController.getAllOrders();
+  }
 }
