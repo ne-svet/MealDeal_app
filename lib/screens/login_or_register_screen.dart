@@ -31,89 +31,92 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                "Sign Up",
-                style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              // Виджет с формой для аутентицикации
-              FormContainerWidget(
-                  controller: _nameController,
-                  hintText: 'Name',
-                  isPasswordField: false),
-              const SizedBox(
-                height: 15,
-              ),
-              FormContainerWidget(
-                  controller: _surnameController,
-                  hintText: 'Surname',
-                  isPasswordField: false),
-              const SizedBox(
-                height: 15,
-              ),
-              FormContainerWidget(
-                  controller: _emailController,
-                  hintText: 'Email',
-                  isPasswordField: false),
-              const SizedBox(
-                height: 15,
-              ),
-              // Виджет с формой для аутентицикации
-              FormContainerWidget(
-                  controller: _passwordController,
-                  hintText: 'Password',
-                  isPasswordField: true),
-              const SizedBox(
-                height: 30,
-              ),
-              GestureDetector(
-                onTap: _signUp,
-                child: Container(
-                  width: double.infinity,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'Sign Up',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "Sign Up",
+                  style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                // Виджет с формой для аутентицикации
+                FormContainerWidget(
+                    controller: _nameController,
+                    hintText: 'Name',
+                    isPasswordField: false),
+                const SizedBox(
+                  height: 15,
+                ),
+                FormContainerWidget(
+                    controller: _surnameController,
+                    hintText: 'Surname',
+                    isPasswordField: false),
+                const SizedBox(
+                  height: 15,
+                ),
+                FormContainerWidget(
+                    controller: _emailController,
+                    hintText: 'Email',
+                    isPasswordField: false),
+                const SizedBox(
+                  height: 15,
+                ),
+                // Виджет с формой для аутентицикации
+                FormContainerWidget(
+                    controller: _passwordController,
+                    hintText: 'Password',
+                    isPasswordField: true),
+                const SizedBox(
+                  height: 30,
+                ),
+                GestureDetector(
+                  onTap: _signUp,
+                  child: Container(
+                    width: double.infinity,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'Sign Up',
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Already have an account?"),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushReplacementNamed(context, '/');
-                    },
-                    child: const Text("Login",
-                        style: TextStyle(
-                            color: Colors.green, fontWeight: FontWeight.bold)),
-                  )
-                ],
-              )
-            ],
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Already have an account?"),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacementNamed(context, '/');
+                      },
+                      child: const Text("Login",
+                          style: TextStyle(
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold)),
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

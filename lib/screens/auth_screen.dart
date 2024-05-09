@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:meal_deal_app/model/firebase_auth_services.dart';
 import 'package:meal_deal_app/widgets/form_container_widget.dart';
 
@@ -12,6 +11,9 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
+  // используется для индикатора загрузки
+  bool _isSigning = false;
+
   final FireBaseAuthService _auth = FireBaseAuthService();
 
   TextEditingController _emailController = TextEditingController();
@@ -72,15 +74,20 @@ class _AuthScreenState extends State<AuthScreen> {
                       color: Colors.green,
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: const Center(
-                      child: Text(
-                        'Login',
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white),
-                      ),
+                    child: Center(
+                      // если isSigning равен true, то показывается колесико загрузки пока данные подгружаются
+                      child: _isSigning
+                          ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
+                          : const Text(
+                              'Login',
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: 'Roboto',
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white),
+                            ),
                     ),
                   ),
                 ),
@@ -113,11 +120,19 @@ class _AuthScreenState extends State<AuthScreen> {
 
   // отправляем данные для регистрации в FireBase
   void _signIn() async {
+    setState(() {
+      _isSigning = true;
+    });
+
     // помещаем текст из контроллеров в отдельные переменныеч
     String email = _emailController.text;
     String password = _passwordController.text;
 
     User? user = await _auth.signInWithEmailAndPassword(email, password);
+
+    setState(() {
+      _isSigning = false;
+    });
 
     // проверяем user на Null
     if (user != null) {
