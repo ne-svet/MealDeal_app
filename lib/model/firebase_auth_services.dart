@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:meal_deal_app/entities/toast.dart';
 
 class FireBaseAuthService {
@@ -26,12 +27,20 @@ class FireBaseAuthService {
   Future<User?> signInWithEmailAndPassword(
       String email, String password) async {
     try {
+      // проверка на заполненость полей
+      if (email.isEmpty || password.isEmpty) {
+        showToast(
+            message: "Please fill in all fields.", backgroundColor: Colors.red);
+        return null;
+      }
       UserCredential credential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       return credential.user;
     } on FirebaseAuthException catch (e) {
       // проверка на правильность логина и пароля
-      if (e.code == "user-not-found" || e.code == "wrong-password") {
+      if (e.code == "invalid-email" ||
+          e.code == "auth/wrong-password" ||
+          e.code == "invalid-credential") {
         showToast(message: "Invalid email or password.");
       } else {
         print(e.code);

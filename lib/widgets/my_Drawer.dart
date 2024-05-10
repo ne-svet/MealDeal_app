@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:meal_deal_app/entities/toast.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
@@ -50,6 +51,7 @@ class MyDrawer extends StatelessWidget {
             onTap: () {
               FirebaseAuth.instance.signOut();
               Navigator.pushReplacementNamed(context, '/');
+              showToast(message: "Successfully signed out");
             },
           ),
         ],

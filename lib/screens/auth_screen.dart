@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:meal_deal_app/entities/toast.dart';
 import 'package:meal_deal_app/model/firebase_auth_services.dart';
 import 'package:meal_deal_app/widgets/form_container_widget.dart';
 
@@ -67,12 +69,12 @@ class _AuthScreenState extends State<AuthScreen> {
                 GestureDetector(
                   onTap: _signIn,
                   child: Container(
-                    // width: double.infinity,
-                    width: 200,
+                    width: double.infinity,
+                    // width: 200,
                     height: 50,
                     decoration: BoxDecoration(
                       color: Colors.green,
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     child: Center(
                       // если isSigning равен true, то показывается колесико загрузки пока данные подгружаются
@@ -88,6 +90,41 @@ class _AuthScreenState extends State<AuthScreen> {
                                   fontWeight: FontWeight.w500,
                                   color: Colors.white),
                             ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                GestureDetector(
+                  child: Container(
+                    width: double.infinity,
+                    // width: 200,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: const Center(
+                      // если isSigning равен true, то показывается колесико загрузки пока данные подгружаются
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.google,
+                            color: Colors.white,
+                          ),
+                          SizedBox(width: 5),
+                          Text(
+                            'Sign In with Google',
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -136,7 +173,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
     // проверяем user на Null
     if (user != null) {
-      print("User is seccessfully SignIn");
+      showToast(message: "Successfully SignIn");
       Navigator.pushReplacementNamed(context, "/menu");
     } else {
       print("Some error happend");

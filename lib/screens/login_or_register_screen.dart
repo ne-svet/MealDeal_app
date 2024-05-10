@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:meal_deal_app/entities/toast.dart';
 import 'package:meal_deal_app/model/firebase_auth_services.dart';
 import 'package:meal_deal_app/widgets/form_container_widget.dart';
 
@@ -31,8 +32,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Center(
+      body: Center(
+        child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
@@ -53,6 +54,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(
                   height: 15,
                 ),
+                // Виджет с формой для аутентицикации
                 FormContainerWidget(
                     controller: _surnameController,
                     hintText: 'Surname',
@@ -60,6 +62,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(
                   height: 15,
                 ),
+                // Виджет с формой для аутентицикации
                 FormContainerWidget(
                     controller: _emailController,
                     hintText: 'Email',
@@ -135,10 +138,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     // проверяем user на Null
     if (user != null) {
-      print("User is seccessfully created");
+      showToast(message: "User is successfully created");
       Navigator.pushReplacementNamed(context, "/menu");
     } else {
-      print("Some error happend");
+      showToast(message: "Happend some error", backgroundColor: Colors.red);
     }
   }
 }
