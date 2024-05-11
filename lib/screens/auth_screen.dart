@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meal_deal_app/entities/toast.dart';
 import 'package:meal_deal_app/model/firebase_auth_services.dart';
 import 'package:meal_deal_app/widgets/form_container_widget.dart';
@@ -17,9 +18,10 @@ class _AuthScreenState extends State<AuthScreen> {
   bool _isSigning = false;
 
   final FireBaseAuthService _auth = FireBaseAuthService();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   //Очищает контроллеры
   @override
@@ -97,6 +99,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   height: 10,
                 ),
                 GestureDetector(
+                  onTap: _signInWithGoogle,
                   child: Container(
                     width: double.infinity,
                     // width: 200,
@@ -106,7 +109,6 @@ class _AuthScreenState extends State<AuthScreen> {
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: const Center(
-                      // если isSigning равен true, то показывается колесико загрузки пока данные подгружаются
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -161,7 +163,7 @@ class _AuthScreenState extends State<AuthScreen> {
       _isSigning = true;
     });
 
-    // помещаем текст из контроллеров в отдельные переменныеч
+    // помещаем текст из контроллеров в отдельные переменные
     String email = _emailController.text;
     String password = _passwordController.text;
 
@@ -177,6 +179,31 @@ class _AuthScreenState extends State<AuthScreen> {
       Navigator.pushReplacementNamed(context, "/menu");
     } else {
       print("Some error happend");
+    }
+  }
+
+// Вход с помощью google account
+  _signInWithGoogle() async {
+    final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+    try {
+      final GoogleSignInAccount? googleSignInAccount =
+          await _googleSignIn.signIn();
+
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication =
+            await googleSignInAccount.authentication;
+
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          idToken: googleSignInAuthentication.idToken,
+          accessToken: googleSignInAuthentication.accessToken,
+        );
+
+        await _firebaseAuth.signInWithCredential(credential);
+        Navigator.pushNamed(context, "/menu");
+      }
+    } catch (e) {
+      showToast(message: "some error occured $e");
     }
   }
 }

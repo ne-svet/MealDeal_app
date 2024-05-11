@@ -8,8 +8,7 @@ class MyDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
+      child: Column(
         children: [
           DrawerHeader(
             decoration: const BoxDecoration(
@@ -42,9 +41,10 @@ class MyDrawer extends StatelessWidget {
               Navigator.pushReplacementNamed(context, '/settings');
             },
           ),
-          const SizedBox(
-            height: 150,
-          ),
+          // const SizedBox(
+          //   height: 150,
+          // ),
+          const Spacer(flex: 2),
           ListTile(
             leading: const Icon(Icons.logout),
             title: const Text('Log out'),
