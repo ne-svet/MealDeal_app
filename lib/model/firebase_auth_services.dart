@@ -30,7 +30,8 @@ class FireBaseAuthService {
       // проверка на заполненость полей
       if (email.isEmpty || password.isEmpty) {
         showToast(
-            message: "Please fill in all fields.", backgroundColor: Colors.red);
+            message: "Please fill in all fields.",
+            backgroundColor: Colors.green);
         return null;
       }
       UserCredential credential = await _auth.signInWithEmailAndPassword(
@@ -43,7 +44,7 @@ class FireBaseAuthService {
           e.code == "invalid-credential") {
         showToast(message: "Invalid email or password.");
       } else {
-        print(e.code);
+        // print(e.code);
         showToast(message: "An error occured ${e.code}");
       }
     }

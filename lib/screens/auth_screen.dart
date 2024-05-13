@@ -163,10 +163,11 @@ class _AuthScreenState extends State<AuthScreen> {
       _isSigning = true;
     });
 
-    // помещаем текст из контроллеров в отдельные переменные
+    // извлечение текста из контроллеров и сохранение их в переменные
     String email = _emailController.text;
     String password = _passwordController.text;
 
+    // Аутентификация пользователя с использованием электронной почты и пароля
     User? user = await _auth.signInWithEmailAndPassword(email, password);
 
     setState(() {
@@ -182,23 +183,28 @@ class _AuthScreenState extends State<AuthScreen> {
     }
   }
 
-// Вход с помощью google account
+  // Вход с помощью google account
   _signInWithGoogle() async {
+    // Создание экземпляра класса GoogleSignIn из пакета google_sign_in, который позволит аутентифицировать пользователя через Google.
     final GoogleSignIn _googleSignIn = GoogleSignIn();
 
     try {
+      // Попытка выполнить вход через Google. Результат сохраняется в переменной googleSignInAccount, которая может быть null.
       final GoogleSignInAccount? googleSignInAccount =
           await _googleSignIn.signIn();
 
       if (googleSignInAccount != null) {
+        // Получение учетных данных аутентификации Google для аутентифицированного аккаунта.
         final GoogleSignInAuthentication googleSignInAuthentication =
             await googleSignInAccount.authentication;
 
+        // Создание учетных данных аутентификации Firebase (AuthCredential) на основе учетных данных аутентификации Google. Эти учетные данные будут использоваться для входа в Firebase.
         final AuthCredential credential = GoogleAuthProvider.credential(
           idToken: googleSignInAuthentication.idToken,
           accessToken: googleSignInAuthentication.accessToken,
         );
 
+        // Аутентификация в Firebase с использованием учетных данных, созданных на предыдущем шаге. signInWithCredential
         await _firebaseAuth.signInWithCredential(credential);
         Navigator.pushNamed(context, "/menu");
       }
