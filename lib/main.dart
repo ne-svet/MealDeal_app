@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
       title: 'Meal Deal',
       routes: {
         '/': (context) => const AuthScreen(),
-        '/loginOrRegister': (context) => LoginOrRegisterScreen(),
+        '/signUp': (context) => SignUpScreen(),
         '/menu': (context) => MenuScreen(),
         '/orderHistory': (context) => OrderHistoryScreen(),
         '/settings': (context) => const SettingsScreen(),
