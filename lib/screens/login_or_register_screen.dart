@@ -138,10 +138,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     // проверяем user на Null
     if (user != null) {
-      //showToast(message: "User is successfully created");
+      showToast(message: "User is successfully created");
       Navigator.pushReplacementNamed(context, "/menu");
     } else {
-      //showToast(message: "Happend some error", backgroundColor: Colors.red);
+      showToast(message: "Happend some error", backgroundColor: Colors.red);
     }
   }
 }

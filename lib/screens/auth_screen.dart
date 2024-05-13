@@ -176,7 +176,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
     // проверяем user на Null
     if (user != null) {
-      //showToast(message: "Successfully SignIn");
+      showToast(message: "Successfully SignIn");
       Navigator.pushReplacementNamed(context, "/menu");
     } else {
       print("Some error happend");
@@ -209,7 +209,7 @@ class _AuthScreenState extends State<AuthScreen> {
         Navigator.pushNamed(context, "/menu");
       }
     } catch (e) {
-      //showToast(message: "some error occured $e");
+      showToast(message: "some error occured $e");
     }
   }
 }
