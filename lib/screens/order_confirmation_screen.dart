@@ -21,18 +21,22 @@ class OrderConfirmationScreen extends StatefulWidget {
 
 class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
   FirestoreController firestoreController = FirestoreController();
+  late Future<void> _saveOrderFuture;
   late UserOrder userOrder;
 
   @override
   void initState() {
     //при инициализации экрана
     super.initState();
-//создаем заказ
-    userOrder = context.read<MenuItemProvider>().createOrder();
+// Поскольку initState не может быть асинхронным, вам нужно использовать альтернативный подход
+    _saveOrderFuture = _createOrderAndSave(); // вызываем метод, который создает заказ и сохраняет его
+  }
 
-
-    //сохраняем заказ
-    firestoreController.saveOrder(userOrder);
+  //асинхронная операция возвращает заказ
+  // Альтернативный подход для создания заказа и сохранения его
+  Future<void> _createOrderAndSave() async {
+    userOrder = await context.read<MenuItemProvider>().createOrder();
+    return firestoreController.saveOrder(userOrder);
   }
 
   @override
@@ -47,15 +51,35 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
             screenIcon: null,
             onPressedScreenIcon: null,
           ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  OrderWidget(orderData: userOrder.toMap()),
-                ],
-              ),
-            ),
+          FutureBuilder<void>(
+            future: _saveOrderFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else {
+                return SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      OrderWidget(orderData: userOrder.toMap()), // Отображаем информацию о заказе
+                      // Добавьте здесь любые другие виджеты или функциональность
+                    ],
+                  ),
+                );
+              }
+            },
           ),
+          // Expanded(
+          //   child: SingleChildScrollView(
+          //     child: Column(
+          //       children: [
+          //         OrderWidget(orderData: userOrder.toMap()),
+          //       ],
+          //     ),
+          //   ),
+          // ),
           SizedBox(
             height: 20,
           ),

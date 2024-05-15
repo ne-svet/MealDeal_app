@@ -1,6 +1,7 @@
 import 'order_items.dart';
 
 class UserOrder {
+  final String userId;
   final String orderNumber;
   final String formattedDate;
   final List<OrderItem> items;
@@ -8,6 +9,7 @@ class UserOrder {
   final String totalPrice;
 
   UserOrder({
+    required this.userId,
     required this.orderNumber,
     required this.formattedDate,
     required this.items,
@@ -18,6 +20,7 @@ class UserOrder {
   //запись в БД
   Map<String, dynamic> toMap() {
     return {
+      "userId": userId,
       'orderNumber': orderNumber,
       'formattedDate': formattedDate,
       'items': items.map((item) => item.toMap()).toList(),
@@ -37,6 +40,7 @@ class UserOrder {
 
 
     UserOrder userOrder = UserOrder(
+        userId: map['userId'],
         orderNumber: map['orderNumber'],
         formattedDate: map['formattedDate'],
         items: orderItems,

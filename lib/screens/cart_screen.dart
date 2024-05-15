@@ -25,6 +25,10 @@ class CartScreen extends StatelessWidget {
           // Получаем корзину из провайдера
           final userCart = menuItemProvider.cart;
 
+          // Рассчитываем итоговое количество и общую сумму
+          final totalItems = menuItemProvider.getTotalItemCount();
+          final totalPrice = menuItemProvider.getTotalPrice();
+
           return Column(children: [
             //зеленое меню
             GreenStripe(
@@ -77,6 +81,52 @@ class CartScreen extends StatelessWidget {
                                 return CartWidget(cartItem: cartItem);
                               }),
                         ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Column(
+                children: [
+                  Container(
+                    height: 1,
+                    color: Colors.grey,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Total items: ',
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        '$totalItems',
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Total price:',
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        '${menuItemProvider.formatPrice(totalPrice)}',
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
             ),

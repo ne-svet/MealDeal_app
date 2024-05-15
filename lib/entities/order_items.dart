@@ -1,4 +1,5 @@
 class OrderItem {
+  final String userId;
   final String restaurant;
   final String location;
   final String itemName;
@@ -6,6 +7,7 @@ class OrderItem {
   final int quantity;
 
   OrderItem({
+    required this.userId,
     required this.restaurant,
     required this.location,
     required this.itemName,
@@ -15,6 +17,7 @@ class OrderItem {
 
   Map<String, dynamic> toMap() {
     return {
+      "userId": userId,
       'restaurant': restaurant,
       'location': location,
       'itemName': itemName,
@@ -26,6 +29,7 @@ class OrderItem {
   // Преобразование данных при загрузке из БД
   factory OrderItem.fromMap(Map<String, dynamic> map) {
     return OrderItem(
+      userId: map['userId'],
       restaurant: map['restaurant'],
       location: map['location'],
       itemName: map['itemName'],

@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:meal_deal_app/entities/toast.dart';
+//import 'package:meal_deal_app/entities/toast.dart';
 import 'package:meal_deal_app/model/firebase_auth_services.dart';
 import 'package:meal_deal_app/widgets/form_container_widget.dart';
 
@@ -138,10 +138,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     // проверяем user на Null
     if (user != null) {
-      showToast(message: "User is successfully created");
+      //showToast(message: "User is successfully created");
       Navigator.pushReplacementNamed(context, "/menu");
     } else {
-      showToast(message: "Happend some error", backgroundColor: Colors.red);
+      //showToast(message: "Happend some error", backgroundColor: Colors.red);
     }
   }
 }

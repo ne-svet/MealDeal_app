@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
@@ -7,8 +8,10 @@ import 'package:meal_deal_app/provider/fireStore_controller.dart';
 import '../entities/cart_item.dart';
 import '../entities/user_order.dart';
 import '../entities/order_items.dart';
+import '../model/firebase_auth_services.dart';
 
 class MenuItemProvider extends ChangeNotifier {
+
   //Firestore
   FirestoreController firestoreController = FirestoreController();
 
@@ -106,26 +109,99 @@ class MenuItemProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+
+  //---------------------------------------------------------------
+  // Получение текущего номера заказа из базы данных Firebase
+  //---------------------------------------------------------------
+
+  Future<int?> getCurrentOrderNumber() async {
+    try {
+      // Получаем экземпляр Firestore
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+      // Получаем документ с текущим номером заказа из коллекции 'order_numbers'
+      DocumentSnapshot documentSnapshot = await firestore
+          .collection('order_num')
+          .doc('current_order_num')
+          .get();
+
+      // Проверяем, существует ли документ и содержит ли он поле 'number'
+      if (documentSnapshot.exists && documentSnapshot.data() != null) {
+        // Приводим данные к типу Map<String, dynamic>
+        Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
+
+        // Получаем текущий номер заказа из поля 'number'
+        int currentOrderNumber = data['number'];
+
+        // Возвращаем текущий номер заказа
+        return currentOrderNumber;
+      } else {
+        // Если документ не существует или не содержит поля 'number', возвращаем null
+        return null;
+      }
+    } catch (error) {
+      // Если произошла ошибка при загрузке текущего номера заказа, возвращаем null
+      print('Error getting current order number: $error');
+      return null;
+    }
+  }
+
+  //---------------------------------------------------------------
+  // Сохранение обновленного номера заказа в базе данных Firebase
+  //---------------------------------------------------------------
+  Future<void> saveCurrentOrderNumber(int newOrderNumber) async {
+    try {
+      // Получаем экземпляр Firestore
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+      // Обновляем поле 'number' в документе 'current_order_num' коллекции 'order_num'
+      await firestore
+          .collection('order_num')
+          .doc('current_order_num')
+          .update({'number': newOrderNumber});
+    } catch (error) {
+      // Если произошла ошибка при сохранении номера заказа, выводим сообщение об ошибке
+      print('Error saving current order number: $error');
+    }
+  }
+
+
+
   //---------------------------------------------------------------
   // получить номер заказа
   //---------------------------------------------------------------
-  String getOrderNumber() {
+  Future<String> getOrderNumber() async {
+    // Получение текущего номера заказа из базе данных
+    int currentOrderNumber = await getCurrentOrderNumber() ?? 55;
+
     String orderPrefix = 'MD - '; // Префикс заказа
+
     String newOrderNumber = currentOrderNumber.toString().padLeft(
         8, '0'); // Нумерация с ведущими нулями до 8 цифр
+
+    // Увеличение текущего номера заказа на единицу
     currentOrderNumber++;
+
+    // Сохранение обновленного номера заказа в базе данных
+    await saveCurrentOrderNumber(currentOrderNumber);
+
+    // Возврат нового номера заказа
     return '$orderPrefix$newOrderNumber';
   }
 
-  //----------------------------------------------------------------
+  //-----------------------------------------------------------`-----
 //generate a receipt
   //----------------------------------------------------------------
-  UserOrder createOrder() {
+  Future<UserOrder> createOrder() async {
     String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(
         DateTime.now());
 
+    // получение userId
+    String userId = await FireBaseAuthService.getUserId();
+
     List<OrderItem> orderItems = _cart.map((cartItem) {
       return OrderItem(
+        userId: userId,
         restaurant: cartItem.menuItem.restaurant,
         location: cartItem.menuItem.location,
         itemName: cartItem.menuItem.name,
@@ -135,60 +211,30 @@ class MenuItemProvider extends ChangeNotifier {
     }).toList();
 
 
+    String num = await getOrderNumber();
+
      UserOrder order = UserOrder(
-        orderNumber: getOrderNumber(),
+       userId: userId,
+        orderNumber: num,
         formattedDate: formattedDate,
         items: orderItems,
         totalItems: getTotalItemCount(),
-        totalPrice: _formatPrice(getTotalPrice()),
+        totalPrice: formatPrice(getTotalPrice()),
 
     );
 
     return order;
-
-
-    //   //долгий стринг
-    //   final receipt = StringBuffer();
-    //   final orderNumber = getOrderNumber();
-    //   receipt.writeln('Here is you receipt.');
-    //   receipt.writeln();
-    //
-    //   String formattedDate =
-    //       DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now());
-    //
-    //   receipt.writeln(formattedDate);
-    //   receipt.writeln('Order Number: $orderNumber');
-    //   receipt.writeln();
-    //   receipt.writeln('-----------------');
-    //
-    //   for (final cartItem in _cart) {
-    //     receipt.writeln("Restaurant: ${cartItem.menuItem.restaurant}");
-    //     receipt.writeln("Location: ${cartItem.menuItem.location}");
-    //     receipt.writeln();
-    //     receipt.writeln(
-    //         "${cartItem.quantity} x ${cartItem.menuItem.name} - ${_formatPrice(cartItem.menuItem.price)}");
-    //
-    //     receipt.writeln('-----------------');
-    //   }
-    //
-    //   receipt.writeln();
-    //   receipt.writeln("Total items: ${getTotalItemCount()}");
-    //   receipt.writeln("Total price: ${_formatPrice(getTotalPrice())}");
-    //
-    //
-    //   return receipt.toString();
   }
 
   //----------------------------------------------------------------
 //format double into money
   //----------------------------------------------------------------
-  String _formatPrice(double price) {
+  String formatPrice(double price) {
     return "€ ${price.toStringAsFixed(2)}";
   }
 
   //  добавляет новые записи в историю
   Future<void> addOrder(UserOrder userOrder) async {
-
     await firestoreController.saveOrder(userOrder);
     notifyListeners(); //оповещаем слушателей, когда история обновляется
   }

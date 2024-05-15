@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+//import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+//import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meal_deal_app/entities/toast.dart';
 import 'package:meal_deal_app/model/firebase_auth_services.dart';
 import 'package:meal_deal_app/widgets/form_container_widget.dart';
@@ -98,38 +98,38 @@ class _AuthScreenState extends State<AuthScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                GestureDetector(
-                  onTap: _signInWithGoogle,
-                  child: Container(
-                    width: double.infinity,
-                    // width: 200,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: const Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            FontAwesomeIcons.google,
-                            color: Colors.white,
-                          ),
-                          SizedBox(width: 5),
-                          Text(
-                            'Sign In with Google',
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontFamily: 'Roboto',
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                // GestureDetector(
+                //   onTap: _signInWithGoogle,
+                //   child: Container(
+                //     width: double.infinity,
+                //     // width: 200,
+                //     height: 50,
+                //     decoration: BoxDecoration(
+                //       color: Colors.red,
+                //       borderRadius: BorderRadius.circular(15),
+                //     ),
+                //     child: const Center(
+                //       child: Row(
+                //         mainAxisAlignment: MainAxisAlignment.center,
+                //         children: [
+                //           Icon(
+                //             FontAwesomeIcons.google,
+                //             color: Colors.white,
+                //           ),
+                //           SizedBox(width: 5),
+                //           Text(
+                //             'Sign In with Google',
+                //             style: TextStyle(
+                //                 fontSize: 15,
+                //                 fontFamily: 'Roboto',
+                //                 fontWeight: FontWeight.w500,
+                //                 color: Colors.white),
+                //           ),
+                //         ],
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -176,40 +176,40 @@ class _AuthScreenState extends State<AuthScreen> {
 
     // проверяем user на Null
     if (user != null) {
-      showToast(message: "Successfully SignIn");
+      //showToast(message: "Successfully SignIn");
       Navigator.pushReplacementNamed(context, "/menu");
     } else {
       print("Some error happend");
     }
   }
 
-  // Вход с помощью google account
-  _signInWithGoogle() async {
-    // Создание экземпляра класса GoogleSignIn из пакета google_sign_in, который позволит аутентифицировать пользователя через Google.
-    final GoogleSignIn _googleSignIn = GoogleSignIn();
-
-    try {
-      // Попытка выполнить вход через Google. Результат сохраняется в переменной googleSignInAccount, которая может быть null.
-      final GoogleSignInAccount? googleSignInAccount =
-          await _googleSignIn.signIn();
-
-      if (googleSignInAccount != null) {
-        // Получение учетных данных аутентификации Google для аутентифицированного аккаунта.
-        final GoogleSignInAuthentication googleSignInAuthentication =
-            await googleSignInAccount.authentication;
-
-        // Создание учетных данных аутентификации Firebase (AuthCredential) на основе учетных данных аутентификации Google. Эти учетные данные будут использоваться для входа в Firebase.
-        final AuthCredential credential = GoogleAuthProvider.credential(
-          idToken: googleSignInAuthentication.idToken,
-          accessToken: googleSignInAuthentication.accessToken,
-        );
-
-        // Аутентификация в Firebase с использованием учетных данных, созданных на предыдущем шаге. signInWithCredential
-        await _firebaseAuth.signInWithCredential(credential);
-        Navigator.pushNamed(context, "/menu");
-      }
-    } catch (e) {
-      showToast(message: "some error occured $e");
-    }
-  }
+  // // Вход с помощью google account
+  // _signInWithGoogle() async {
+  //   // Создание экземпляра класса GoogleSignIn из пакета google_sign_in, который позволит аутентифицировать пользователя через Google.
+  //   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  //
+  //   try {
+  //     // Попытка выполнить вход через Google. Результат сохраняется в переменной googleSignInAccount, которая может быть null.
+  //     final GoogleSignInAccount? googleSignInAccount =
+  //         await _googleSignIn.signIn();
+  //
+  //     if (googleSignInAccount != null) {
+  //       // Получение учетных данных аутентификации Google для аутентифицированного аккаунта.
+  //       final GoogleSignInAuthentication googleSignInAuthentication =
+  //           await googleSignInAccount.authentication;
+  //
+  //       // Создание учетных данных аутентификации Firebase (AuthCredential) на основе учетных данных аутентификации Google. Эти учетные данные будут использоваться для входа в Firebase.
+  //       final AuthCredential credential = GoogleAuthProvider.credential(
+  //         idToken: googleSignInAuthentication.idToken,
+  //         accessToken: googleSignInAuthentication.accessToken,
+  //       );
+  //
+  //       // Аутентификация в Firebase с использованием учетных данных, созданных на предыдущем шаге. signInWithCredential
+  //       await _firebaseAuth.signInWithCredential(credential);
+  //       Navigator.pushNamed(context, "/menu");
+  //     }
+  //   } catch (e) {
+  //     showToast(message: "some error occured $e");
+  //   }
+  // }
 }

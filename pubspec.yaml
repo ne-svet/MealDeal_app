@@ -38,8 +38,8 @@ dependencies:
   cloud_firestore: ^4.15.8
   firebase_auth: ^4.17.8
   firebase_storage: ^11.6.9
-  google_sign_in: ^6.2.1
-  fluttertoast: ^8.2.5
+  #google_sign_in: ^6.2.1
+  #fluttertoast: ^8.2.5
   provider: ^6.1.2
   http: ^1.2.0
   collection: ^1.18.0

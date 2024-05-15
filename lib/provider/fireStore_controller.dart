@@ -5,6 +5,7 @@ import 'package:meal_deal_app/entities/menu_item.dart';
 import 'package:meal_deal_app/entities/user_order.dart';
 
 import '../firebase_options.dart';
+import '../model/firebase_auth_services.dart';
 
 class FirestoreController {
   //создаем объект с БД
@@ -29,16 +30,22 @@ class FirestoreController {
   Future<List<MenuItem>> getAllData() async {
     //вначале инициализируем
     await init();
-    //формат json map формат
-    QuerySnapshot snapshot = await db.collection('product_db').get();
+    try {//формат json map формат
+      QuerySnapshot snapshot = await db.collection('product_db').get();
 
-    //обработать все объекты из коллекции  product_db
-    List<MenuItem> menuItems = snapshot.docs.map((item) {
-      Map<String, dynamic> data = item.data() as Map<String, dynamic>;
-      return MenuItem.fromMap(data);
-    }).toList();
-    //возвращаем список
-    return menuItems;
+      //обработать все объекты из коллекции  product_db
+      List<MenuItem> menuItems = snapshot.docs.map((item) {
+        Map<String, dynamic> data = item.data() as Map<String, dynamic>;
+        return MenuItem.fromMap(data);
+      }).toList();
+      //возвращаем список
+      return menuItems;}
+    catch (e) {
+      // Обработка ошибок
+      print('Error fetching menu items: $e');
+      return [];
+    }
+
   }
 
   // Универсальная функция для извлечения уникальных значений из списка объектов MenuItem
@@ -142,13 +149,12 @@ class FirestoreController {
   Future<List<UserOrder>> getAllOrders() async {
     await init();
 
+    String userId = await FireBaseAuthService.getUserId();
+
     QuerySnapshot snapshot = await db
         .collection('user_orders')
-    //------------------------------------------------------------------------
-    //когда будет пользователь
-    // // выбираем по UserID
-    //     .where('userId', isEqualTo: userId)
-    //------------------------------------------------------------------------
+     // выбираем по UserID
+         .where('userId', isEqualTo: userId)
     //сортируем по дате
         .orderBy('formattedDate', descending: true)
         .get();

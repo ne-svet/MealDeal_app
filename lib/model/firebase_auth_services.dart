@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:meal_deal_app/entities/toast.dart';
 
 class FireBaseAuthService {
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  static FirebaseAuth _auth = FirebaseAuth.instance;
 
 // создание нового пользователя
   Future<User?> signUpWithEmailAndPassword(
@@ -49,5 +49,15 @@ class FireBaseAuthService {
       }
     }
     return null;
+  }
+
+//получаем userId
+  static Future<String> getUserId() async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      return user.uid;
+    } else {
+      throw Exception('User is not authenticated');
+    }
   }
 }
