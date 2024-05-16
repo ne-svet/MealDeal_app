@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:meal_deal_app/model/filter_operations.dart';
-import 'package:meal_deal_app/widgets/my_bottom_appBar.dart';
-
-import '../widgets/filter_chip_widget.dart';
-import '../widgets/filter_title.dart';
 import '../widgets/filter_widget.dart';
 import '../widgets/green_stripe.dart';
 import '../widgets/my_Drawer.dart';
@@ -24,9 +20,10 @@ class _FilterScreenState extends State<FilterScreen> {
   Set<String> locations = {};
 
   List<String> _selectedCategories = [];
-  List<String> _selectedRestaurants  = [];
-  List<String> _selectedLocations  = [];
-  List? selectedPriceRange;
+  List<String> _selectedRestaurants = [];
+  List<String> _selectedLocations = [];
+
+  //List? selectedPriceRange;
 
   @override
   void initState() {
@@ -54,9 +51,6 @@ class _FilterScreenState extends State<FilterScreen> {
         locations = value.toSet();
       });
     });
-
-    //заполняе лист с фильтрами
-    _selectedCategories = <String>[];
   }
 
   @override
@@ -64,7 +58,6 @@ class _FilterScreenState extends State<FilterScreen> {
     return Scaffold(
       appBar: MyAppBar(),
       drawer: MyDrawer(),
-      bottomNavigationBar: const MyBottomAppBar(),
       body: Column(
         children: [
           GreenStripe(
@@ -76,45 +69,127 @@ class _FilterScreenState extends State<FilterScreen> {
               child: SingleChildScrollView(
             child: Column(
               children: [
-                FilterWidget(filterName: "Category", filterItems: categories),
+                FilterWidget(
+                  filterItems: categories,
+                  filterName: "Category",
+                  selectedItems: _selectedCategories,
+                  onSelectionChanged: (isSelected, item) {
+                    setState(() {
+                      if (isSelected) {
+                        _selectedCategories.add(item);
+                      } else {
+                        _selectedCategories.remove(item);
+                      }
+                    });
+                  },
+                ),
                 SizedBox(
                   height: 10,
                 ),
-                FilterWidget(filterName: "Restaurant", filterItems: restaurants),
+                FilterWidget(
+                  filterItems: restaurants,
+                  filterName: "Restaurant",
+                  selectedItems: _selectedRestaurants,
+                  onSelectionChanged: (isSelected, item) {
+                    setState(() {
+                      if (isSelected) {
+                        _selectedRestaurants.add(item);
+                      } else {
+                        _selectedRestaurants.remove(item);
+                      }
+                    });
+                  },
+                ),
                 SizedBox(
                   height: 10,
                 ),
-                FilterWidget(filterName: "Location", filterItems: locations),
+                FilterWidget(
+                  filterItems: locations,
+                  filterName: "Location",
+                  selectedItems: _selectedLocations,
+                  onSelectionChanged: (isSelected, item) {
+                    setState(() {
+                      if (isSelected) {
+                        _selectedLocations.add(item);
+                      } else {
+                        _selectedLocations.remove(item);
+                      }
+                    });
+                  },
+                ),
                 SizedBox(
                   height: 10,
                 ),
 
-                //виджет с ценой
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: EdgeInsets.all(20),
-                    //виджет для заголовков
-                    child: FilterTitle("Price €"),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 20),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      child: Wrap(spacing: 10, runSpacing: 3, children: [
-                        FilterChipWidget(chipName: "0 - 4"),
-                        FilterChipWidget(chipName: "5 - 9"),
-                        FilterChipWidget(chipName: "10 - 15"),
-                        FilterChipWidget(chipName: "> 15"),
-                      ]),
-                    ),
-                  ),
-                ),
+                // //виджет с ценой
+                // Align(
+                //   alignment: Alignment.centerLeft,
+                //   child: Padding(
+                //     padding: EdgeInsets.all(20),
+                //     //виджет для заголовков
+                //     child: FilterTitle("Price €"),
+                //   ),
+                // ),
+                // Padding(
+                //   padding: EdgeInsets.only(left: 20),
+                //   child: Align(
+                //     alignment: Alignment.centerLeft,
+                //     child: Container(
+                //       child: Wrap(spacing: 10, runSpacing: 3, children: [
+                //         FilterChipWidget(chipName: "0 - 4"),
+                //         FilterChipWidget(chipName: "5 - 9"),
+                //         FilterChipWidget(chipName: "10 - 15"),
+                //         FilterChipWidget(chipName: "> 15"),
+                //       ]),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
-          ))
+          )),
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 50),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        backgroundColor: Color(0xFF62BD5C),
+                      ),
+                      onPressed: () {
+                        List<List<String>> arguments = [];
+
+                        if (_selectedCategories.isNotEmpty ||
+                            _selectedRestaurants.isNotEmpty ||
+                            _selectedLocations.isNotEmpty) {
+                          arguments = [
+                            _selectedCategories,
+                            _selectedRestaurants,
+                            _selectedLocations
+                          ];
+                        }
+
+                        Navigator.pushNamed(context, "/menu",
+                            arguments: arguments);
+                      },
+                      child: Text(
+                        "Apply",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Colors.white),
+                      )),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 15,
+          ),
         ],
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 //import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 //import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meal_deal_app/entities/toast.dart';
@@ -183,33 +184,33 @@ class _AuthScreenState extends State<AuthScreen> {
     }
   }
 
-  // // Вход с помощью google account
-  // _signInWithGoogle() async {
-  //   // Создание экземпляра класса GoogleSignIn из пакета google_sign_in, который позволит аутентифицировать пользователя через Google.
-  //   final GoogleSignIn _googleSignIn = GoogleSignIn();
-  //
-  //   try {
-  //     // Попытка выполнить вход через Google. Результат сохраняется в переменной googleSignInAccount, которая может быть null.
-  //     final GoogleSignInAccount? googleSignInAccount =
-  //         await _googleSignIn.signIn();
-  //
-  //     if (googleSignInAccount != null) {
-  //       // Получение учетных данных аутентификации Google для аутентифицированного аккаунта.
-  //       final GoogleSignInAuthentication googleSignInAuthentication =
-  //           await googleSignInAccount.authentication;
-  //
-  //       // Создание учетных данных аутентификации Firebase (AuthCredential) на основе учетных данных аутентификации Google. Эти учетные данные будут использоваться для входа в Firebase.
-  //       final AuthCredential credential = GoogleAuthProvider.credential(
-  //         idToken: googleSignInAuthentication.idToken,
-  //         accessToken: googleSignInAuthentication.accessToken,
-  //       );
-  //
-  //       // Аутентификация в Firebase с использованием учетных данных, созданных на предыдущем шаге. signInWithCredential
-  //       await _firebaseAuth.signInWithCredential(credential);
-  //       Navigator.pushNamed(context, "/menu");
-  //     }
-  //   } catch (e) {
-  //     showToast(message: "some error occured $e");
-  //   }
-  // }
+// // Вход с помощью google account
+// _signInWithGoogle() async {
+//   // Создание экземпляра класса GoogleSignIn из пакета google_sign_in, который позволит аутентифицировать пользователя через Google.
+//   final GoogleSignIn _googleSignIn = GoogleSignIn();
+//
+//   try {
+//     // Попытка выполнить вход через Google. Результат сохраняется в переменной googleSignInAccount, которая может быть null.
+//     final GoogleSignInAccount? googleSignInAccount =
+//         await _googleSignIn.signIn();
+//
+//     if (googleSignInAccount != null) {
+//       // Получение учетных данных аутентификации Google для аутентифицированного аккаунта.
+//       final GoogleSignInAuthentication googleSignInAuthentication =
+//           await googleSignInAccount.authentication;
+//
+//       // Создание учетных данных аутентификации Firebase (AuthCredential) на основе учетных данных аутентификации Google. Эти учетные данные будут использоваться для входа в Firebase.
+//       final AuthCredential credential = GoogleAuthProvider.credential(
+//         idToken: googleSignInAuthentication.idToken,
+//         accessToken: googleSignInAuthentication.accessToken,
+//       );
+//
+//       // Аутентификация в Firebase с использованием учетных данных, созданных на предыдущем шаге. signInWithCredential
+//       await _firebaseAuth.signInWithCredential(credential);
+//       Navigator.pushNamed(context, "/menu");
+//     }
+//   } catch (e) {
+//     showToast(message: "some error occured $e");
+//   }
+// }
 }

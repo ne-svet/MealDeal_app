@@ -11,9 +11,17 @@ class MenuItem {
   int quantity;
 
   //конструктор
-MenuItem (
-    this.category, this.name,this.description, this.imageUrl, this.restaurant, this.link, this.location, this.onSale, this.price, this.quantity
-    );
+  MenuItem(
+      this.category,
+      this.name,
+      this.description,
+      this.imageUrl,
+      this.restaurant,
+      this.link,
+      this.location,
+      this.onSale,
+      this.price,
+      this.quantity);
 
 //объект MenuItem для БД. Сериализация данных
   Map<String, Object> toMap() {
@@ -33,17 +41,17 @@ MenuItem (
 
   factory MenuItem.fromMap(Map<String, dynamic> map) {
     //из объекта БД создаем объект PhotoMemory
-    MenuItem menuItem =
-    MenuItem(
-        map['category'],
-        map['name'],
+    MenuItem menuItem = MenuItem(
+      map['category'],
+      map['name'],
       map['description'],
       map['image_url'],
       map['restaurant'],
       map['link'],
       map['location'],
       map['on_sale'],
-      (map['price']).toDouble(), // Преобразование int в double
+      (map['price']).toDouble(),
+      // Преобразование int в double
       map['quantity'],
     );
 
@@ -71,15 +79,14 @@ MenuItem (
   @override
   int get hashCode {
     return category.hashCode ^
-    name.hashCode ^
-    description.hashCode ^
-    imageUrl.hashCode ^
-    restaurant.hashCode ^
-    link.hashCode ^
-    location.hashCode ^
-    onSale.hashCode ^
-    price.hashCode ^
-    quantity.hashCode;
+        name.hashCode ^
+        description.hashCode ^
+        imageUrl.hashCode ^
+        restaurant.hashCode ^
+        link.hashCode ^
+        location.hashCode ^
+        onSale.hashCode ^
+        price.hashCode ^
+        quantity.hashCode;
   }
-
 }

@@ -52,8 +52,7 @@ class CartWidget extends StatelessWidget {
                               Text(
                                 cartItem.menuItem.name,
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16),
+                                    fontWeight: FontWeight.bold, fontSize: 16),
                               ),
                               Text(
                                 cartItem.menuItem.category,
@@ -70,8 +69,7 @@ class CartWidget extends StatelessWidget {
                                   menuItemProvider.removeFromCart(cartItem);
                                 },
                                 onIncrement: () {
-                                  menuItemProvider
-                                      .addToCart(cartItem.menuItem);
+                                  menuItemProvider.addToCart(cartItem.menuItem);
                                 },
                               ),
                               SizedBox(
@@ -79,20 +77,15 @@ class CartWidget extends StatelessWidget {
                               ),
                               Text(
                                 cartItem.menuItem.restaurant,
-                                style: TextStyle(
-
-                                    fontSize: 16),
+                                style: TextStyle(fontSize: 16),
                               ),
                               SizedBox(
                                 height: 5,
                               ),
                               Text(
                                 cartItem.menuItem.location,
-                                style: TextStyle(
-
-                                    fontSize: 16),
+                                style: TextStyle(fontSize: 16),
                               ),
-                                              
                             ],
                           ),
                         ),

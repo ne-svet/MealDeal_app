@@ -4,8 +4,6 @@ import 'package:meal_deal_app/provider/menu_item_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MenuItemWidget extends StatelessWidget {
-
-
   final MenuItem menuItem;
   final MenuItemProvider menuItemProvider;
 
@@ -15,7 +13,6 @@ class MenuItemWidget extends StatelessWidget {
     required this.menuItem,
     required this.menuItemProvider,
   }) : super(key: key);
-
 
   Future<void> _launchInBrowser(Uri url) async {
     if (!await launchUrl(

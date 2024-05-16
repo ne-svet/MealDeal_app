@@ -30,7 +30,8 @@ class FirestoreController {
   Future<List<MenuItem>> getAllData() async {
     //вначале инициализируем
     await init();
-    try {//формат json map формат
+    try {
+      //формат json map формат
       QuerySnapshot snapshot = await db.collection('product_db').get();
 
       //обработать все объекты из коллекции  product_db
@@ -39,18 +40,71 @@ class FirestoreController {
         return MenuItem.fromMap(data);
       }).toList();
       //возвращаем список
-      return menuItems;}
-    catch (e) {
+      return menuItems;
+    } catch (e) {
       // Обработка ошибок
       print('Error fetching menu items: $e');
       return [];
     }
-
   }
 
-  // Универсальная функция для извлечения уникальных значений из списка объектов MenuItem
-  Future<List<String>> getUniqueValues (
+  //выборка по всем фильтрам
+  Future<List<MenuItem>> getAllDataBySelectedFilters(
+    List<String> selectedCategories,
+    List<String> selectedRestaurants,
+    List<String> selectedLocations,
+  ) async {
+    //вначале инициализируем
+    await init();
+    try {
+      //формат json map формат
+      QuerySnapshot snapshot = await db.collection('product_db').get();
 
+      // Фильтрация данных по выбранным категориям
+      List<MenuItem> menuItems = snapshot.docs
+          .map((item) => MenuItem.fromMap(item.data() as Map<String, dynamic>))
+          .where((menuItem) =>
+              selectedCategories.contains(menuItem.category) ||
+              selectedRestaurants.contains(menuItem.restaurant) ||
+              selectedLocations.contains(menuItem.location))
+          .toList();
+      //возвращаем список
+      return menuItems;
+    } catch (e) {
+      // Обработка ошибок
+      print('Error fetching menu items: $e');
+      return [];
+    }
+  }
+
+  //-----------------------------------------------
+  //выборка по категории
+  Future<List<MenuItem>> getAllDataByCategiries(
+      List<String> selectedCategories) async {
+    //вначале инициализируем
+    await init();
+    try {
+      //формат json map формат
+      QuerySnapshot snapshot = await db.collection('product_db').get();
+
+      // Фильтрация данных по выбранным категориям
+      List<MenuItem> menuItems = snapshot.docs
+          .map((item) => MenuItem.fromMap(item.data() as Map<String, dynamic>))
+          .where((menuItem) => selectedCategories.contains(menuItem.category))
+          .toList();
+      //возвращаем список
+      return menuItems;
+    } catch (e) {
+      // Обработка ошибок
+      print('Error fetching menu items: $e');
+      return [];
+    }
+  }
+
+  //-----------------------------------------------
+
+  // Универсальная функция для извлечения уникальных значений из списка объектов MenuItem
+  Future<List<String>> getUniqueValues(
       String Function(MenuItem) getValue) async {
     await init();
     final List<MenuItem> menuItems = await getAllData();
@@ -72,17 +126,12 @@ class FirestoreController {
       // Преобразуем UserOrder в Map
       Map<String, dynamic> data = userOrder.toMap();
 
-      DocumentReference docRef =
-      await db.collection('user_orders').add(data);
-    }catch(e){
+      DocumentReference docRef = await db.collection('user_orders').add(data);
+    } catch (e) {
       print('Error saving order: $e');
       throw e;
     }
-
-
-
   }
-
 
 //   //---------------------------------------
 // // сохранить заказ
@@ -118,7 +167,6 @@ class FirestoreController {
 //     }
 //   }
 
-
   //---------------------------------------
   //сохранение заказа в историю
   //---------------------------------------
@@ -153,9 +201,9 @@ class FirestoreController {
 
     QuerySnapshot snapshot = await db
         .collection('user_orders')
-     // выбираем по UserID
-         .where('userId', isEqualTo: userId)
-    //сортируем по дате
+        // выбираем по UserID
+        .where('userId', isEqualTo: userId)
+        //сортируем по дате
         .orderBy('formattedDate', descending: true)
         .get();
     //обрабатываем snapshot,

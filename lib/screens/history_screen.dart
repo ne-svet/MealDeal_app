@@ -31,7 +31,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
           Expanded(
               child: SingleChildScrollView(
                   child: FutureBuilder<List<UserOrder>>(
-                    //задаем функцию достать историю
+                      //задаем функцию достать историю
                       future: Provider.of<MenuItemProvider>(context)
                           .getAllOrderHistory(),
                       //какой виджет показывать ---->
@@ -40,9 +40,9 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                             snapshot.hasData &&
                             snapshot.data!.isNotEmpty) {
                           return Column(
-                              children: snapshot.data!.map((order) {
-                                return OrderWidget(orderData: order.toMap());
-                              }).toList(),
+                            children: snapshot.data!.map((order) {
+                              return OrderWidget(orderData: order.toMap());
+                            }).toList(),
                           );
                         } else if (snapshot.hasData && snapshot.data!.isEmpty) {
                           return const Center(

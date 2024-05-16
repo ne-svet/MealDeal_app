@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:meal_deal_app/entities/menu_item.dart';
 import 'package:meal_deal_app/provider/fireStore_controller.dart';
 import 'package:meal_deal_app/provider/menu_item_provider.dart';
-import 'package:meal_deal_app/widgets/my_receipt.dart';
 import 'package:meal_deal_app/widgets/order_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -29,14 +27,21 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
     //при инициализации экрана
     super.initState();
 // Поскольку initState не может быть асинхронным, вам нужно использовать альтернативный подход
-    _saveOrderFuture = _createOrderAndSave(); // вызываем метод, который создает заказ и сохраняет его
+    _saveOrderFuture =
+        _createOrderAndSave(); // вызываем метод, который создает заказ и сохраняет его
   }
 
   //асинхронная операция возвращает заказ
   // Альтернативный подход для создания заказа и сохранения его
   Future<void> _createOrderAndSave() async {
+    // Создание заказа
     userOrder = await context.read<MenuItemProvider>().createOrder();
-    return firestoreController.saveOrder(userOrder);
+
+    // Сохранение заказа
+    await firestoreController.saveOrder(userOrder);
+
+    // Очистка корзины
+    context.read<MenuItemProvider>().clearCart();
   }
 
   @override
@@ -63,7 +68,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      OrderWidget(orderData: userOrder.toMap()), // Отображаем информацию о заказе
+                      OrderWidget(orderData: userOrder.toMap()),
+                      // Отображаем информацию о заказе
                       // Добавьте здесь любые другие виджеты или функциональность
                     ],
                   ),

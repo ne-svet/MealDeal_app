@@ -11,13 +11,29 @@ import '../entities/order_items.dart';
 import '../model/firebase_auth_services.dart';
 
 class MenuItemProvider extends ChangeNotifier {
-
   //Firestore
   FirestoreController firestoreController = FirestoreController();
 
   //получаем меню из Firestore
   Future<List<MenuItem>> getAllMenuItems() async {
     return firestoreController.getAllData();
+  }
+
+  //получаем меню из Firestore по категориям
+  Future<List<MenuItem>> getMenuItemsByCategories(
+      List<String> selectedCategories) async {
+    return firestoreController.getAllDataByCategiries(selectedCategories);
+  }
+
+  //----------------------------------------------------------------
+  //получаем меню из Firestore по всем фильтрам
+  Future<List<MenuItem>> getAllDataBySelectedFilters(
+    List<String> selectedCategories,
+    List<String> selectedRestaurants,
+    List<String> selectedLocations,
+  ) async {
+    return firestoreController.getAllDataBySelectedFilters(
+        selectedCategories, selectedRestaurants, selectedLocations);
   }
 
   //----------------------------------------------------------------
@@ -41,7 +57,7 @@ class MenuItemProvider extends ChangeNotifier {
   void addToCart(MenuItem menuItem) {
     // Проверяем, существует ли уже такой товар в корзине
     CartItem? existingCartItem =
-    _cart.firstWhereOrNull((item) => item.menuItem == menuItem);
+        _cart.firstWhereOrNull((item) => item.menuItem == menuItem);
 
     // Если товар уже существует - увеличиваем количество
     if (existingCartItem != null) {
@@ -109,7 +125,6 @@ class MenuItemProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
   //---------------------------------------------------------------
   // Получение текущего номера заказа из базы данных Firebase
   //---------------------------------------------------------------
@@ -128,7 +143,8 @@ class MenuItemProvider extends ChangeNotifier {
       // Проверяем, существует ли документ и содержит ли он поле 'number'
       if (documentSnapshot.exists && documentSnapshot.data() != null) {
         // Приводим данные к типу Map<String, dynamic>
-        Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
+        Map<String, dynamic> data =
+            documentSnapshot.data() as Map<String, dynamic>;
 
         // Получаем текущий номер заказа из поля 'number'
         int currentOrderNumber = data['number'];
@@ -165,8 +181,6 @@ class MenuItemProvider extends ChangeNotifier {
     }
   }
 
-
-
   //---------------------------------------------------------------
   // получить номер заказа
   //---------------------------------------------------------------
@@ -176,8 +190,9 @@ class MenuItemProvider extends ChangeNotifier {
 
     String orderPrefix = 'MD - '; // Префикс заказа
 
-    String newOrderNumber = currentOrderNumber.toString().padLeft(
-        8, '0'); // Нумерация с ведущими нулями до 8 цифр
+    String newOrderNumber = currentOrderNumber
+        .toString()
+        .padLeft(8, '0'); // Нумерация с ведущими нулями до 8 цифр
 
     // Увеличение текущего номера заказа на единицу
     currentOrderNumber++;
@@ -193,8 +208,8 @@ class MenuItemProvider extends ChangeNotifier {
 //generate a receipt
   //----------------------------------------------------------------
   Future<UserOrder> createOrder() async {
-    String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(
-        DateTime.now());
+    String formattedDate =
+        DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now());
 
     // получение userId
     String userId = await FireBaseAuthService.getUserId();
@@ -210,17 +225,15 @@ class MenuItemProvider extends ChangeNotifier {
       );
     }).toList();
 
-
     String num = await getOrderNumber();
 
-     UserOrder order = UserOrder(
-       userId: userId,
-        orderNumber: num,
-        formattedDate: formattedDate,
-        items: orderItems,
-        totalItems: getTotalItemCount(),
-        totalPrice: formatPrice(getTotalPrice()),
-
+    UserOrder order = UserOrder(
+      userId: userId,
+      orderNumber: num,
+      formattedDate: formattedDate,
+      items: orderItems,
+      totalItems: getTotalItemCount(),
+      totalPrice: formatPrice(getTotalPrice()),
     );
 
     return order;

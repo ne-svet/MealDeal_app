@@ -19,8 +19,7 @@ class QuantitySelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(50)),
+          color: Colors.white, borderRadius: BorderRadius.circular(50)),
       padding: EdgeInsets.all(8),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -42,11 +41,10 @@ class QuantitySelector extends StatelessWidget {
             child: SizedBox(
               width: 25,
               child: Center(
-                child: Text(quantity.toString(),
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18
-                ),),
+                child: Text(
+                  quantity.toString(),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                ),
               ),
             ),
           ),

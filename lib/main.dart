@@ -13,7 +13,6 @@ import 'package:meal_deal_app/screens/payment_screen.dart';
 import 'package:meal_deal_app/screens/settings_screen.dart';
 import 'package:provider/provider.dart';
 
-import 'firebase_options.dart';
 
 Future<void> main() async {
   //инициализация Firebase
@@ -23,7 +22,8 @@ Future<void> main() async {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
       create: (context) => MenuItemProvider(),
-    )
+    ),
+    //провайдер состояния фильтров
   ], child: MyApp()));
 }
 

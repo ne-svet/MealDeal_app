@@ -53,7 +53,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   Navigator.pop(context);
                   Navigator.pushNamed(context, '/confirmation').then((_) {
                     // Вызываем метод очистки корзины и обновляем состояние виджета
-                    Provider.of<MenuItemProvider>(context, listen: false).clearCart();
+                    Provider.of<MenuItemProvider>(context, listen: false)
+                        .clearCart();
                     // Можно добавить setState(), если виджет не обновляется автоматически
                   });
                 },
