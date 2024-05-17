@@ -62,12 +62,12 @@ class CartScreen extends StatelessWidget {
               child: Column(
                 children: [
                   userCart.isEmpty
-                      ? Column(
+                      ? const Column(
                           children: [
                             SizedBox(
                               height: 50,
                             ),
-                            Center(child: const Text("Cart is empty...")),
+                            Center(child: Text("Cart is empty...")),
                           ],
                         )
                       : Expanded(
@@ -92,31 +92,31 @@ class CartScreen extends StatelessWidget {
                     height: 1,
                     color: Colors.grey,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'Total items: ',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       Text(
                         '$totalItems',
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'Total price:',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
@@ -128,7 +128,7 @@ class CartScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                 ],
@@ -144,14 +144,14 @@ class CartScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushNamed(context, '/payment');
                 },
-                child: Text(
+                child: const Text(
                   "Go to checkout",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
                       color: Colors.white),
                 )),
-            SizedBox(
+            const SizedBox(
               height: 20,
             )
           ]);

@@ -47,8 +47,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(),
-      drawer: MyDrawer(),
+      appBar: const MyAppBar(),
+      drawer: const MyDrawer(),
       body: Column(
         children: [
           GreenStripe(

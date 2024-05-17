@@ -7,7 +7,11 @@ class GreenStripe extends StatelessWidget {
   //final IconData? backIcon;
   final VoidCallback? onPressedScreenIcon;
 
-  GreenStripe({super.key, required this.screenName, this.screenIcon,required this.onPressedScreenIcon});
+  GreenStripe(
+      {super.key,
+      required this.screenName,
+      this.screenIcon,
+      required this.onPressedScreenIcon});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +25,7 @@ class GreenStripe extends StatelessWidget {
           children: [
             Text(
               screenName,
-              style: TextStyle(
+              style: const TextStyle(
                   fontSize: 20,
                   //fontWeight: FontWeight.bold,
                   color: Colors.white),

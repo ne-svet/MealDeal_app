@@ -1,3 +1,6 @@
+// import 'dart:js_interop';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 //import 'package:meal_deal_app/entities/toast.dart';
@@ -134,14 +137,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
     String email = _emailController.text;
     String password = _passwordController.text;
 
+    //создаем пользователя
     User? user = await _auth.signUpWithEmailAndPassword(email, password);
+
+    // //добавляем детали пользователя(имя и фамилию)
+    // addUserDetails(name, surname, email);
 
     // проверяем user на Null
     if (user != null) {
+      // FirebaseFirestore.instance.collection("users").doc(user.uid).set({
+      //   'first name': name,
+      //   'last name': surname,
+      //   'email': email,
+      // });
+      //добавляем детали пользователя(имя и фамилию)
+      addUserDetails(user.uid, name, surname, email);
       //showToast(message: "User is successfully created");
       Navigator.pushReplacementNamed(context, "/menu");
     } else {
       //showToast(message: "Happend some error", backgroundColor: Colors.red);
     }
+  }
+
+// данные пользователя сохраняются в отдельную коллекцию
+  Future addUserDetails(
+      String uid, String name, String lastname, String email) async {
+    await FirebaseFirestore.instance.collection("users").doc(uid).set({
+      'first name': name,
+      'last name': lastname,
+      'email': email,
+      'uid': uid
+    });
   }
 }
