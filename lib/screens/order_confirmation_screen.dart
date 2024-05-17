@@ -56,56 +56,64 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
             screenIcon: null,
             onPressedScreenIcon: null,
           ),
-          FutureBuilder<void>(
-            future: _saveOrderFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              } else {
-                return SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      OrderWidget(orderData: userOrder.toMap()),
-                      // Отображаем информацию о заказе
-                      // Добавьте здесь любые другие виджеты или функциональность
-                    ],
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  FutureBuilder<void>(
+                    future: _saveOrderFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else {
+                        return SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              OrderWidget(orderData: userOrder.toMap()),
+                              // Отображаем информацию о заказе
+                              // Добавьте здесь любые другие виджеты или функциональность
+                            ],
+                          ),
+                        );
+                      }
+                    },
                   ),
-                );
-              }
-            },
-          ),
-          // Expanded(
-          //   child: SingleChildScrollView(
-          //     child: Column(
-          //       children: [
-          //         OrderWidget(orderData: userOrder.toMap()),
-          //       ],
-          //     ),
-          //   ),
-          // ),
-          SizedBox(
-            height: 20,
-          ),
-          ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 50),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                backgroundColor: Color(0xFF62BD5C),
+                  // Expanded(
+                  //   child: SingleChildScrollView(
+                  //     child: Column(
+                  //       children: [
+                  //         OrderWidget(orderData: userOrder.toMap()),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 50),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        backgroundColor: Color(0xFF62BD5C),
+                      ),
+                      onPressed: () => Navigator.pushNamed(context, '/menu'),
+                      child: const Text(
+                        "Go to menu",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Colors.white),
+                      )),
+                  SizedBox(
+                    height: 20,
+                  ),
+                ],
               ),
-              onPressed: () => Navigator.pushNamed(context, '/menu'),
-              child: const Text(
-                "Go to menu",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Colors.white),
-              )),
-          SizedBox(
-            height: 20,
+            ),
           )
         ],
       ),
