@@ -42,13 +42,17 @@ class _AuthScreenState extends State<AuthScreen> {
             child: Column(
               // mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset('lib/assets/images/logo_ver1.png'),
+                const SizedBox(
+                  height: 30,
+                ),
+                Image.asset('lib/assets/images/logo_ver1.png',
+                ),
                 const Text(
                   'Welcome to MealDeal',
                   style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 20,
                       fontFamily: 'Roboto',
-                      fontWeight: FontWeight.w500),
+                      fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
                   height: 20,
@@ -57,7 +61,8 @@ class _AuthScreenState extends State<AuthScreen> {
                 FormContainerWidget(
                     controller: _emailController,
                     hintText: 'Email',
-                    isPasswordField: false),
+                    isPasswordField: false,
+                ),
                 const SizedBox(
                   height: 15,
                 ),

@@ -52,6 +52,7 @@ class _FormContainerWidgetState extends State<FormContainerWidget> {
         decoration: new InputDecoration(
           border: InputBorder.none,
           filled: true,
+          fillColor: const Color(0xFFECF4D4),
           hintText: widget.hintText,
           hintStyle: TextStyle(color: Colors.black45),
           suffixIcon: new GestureDetector(
