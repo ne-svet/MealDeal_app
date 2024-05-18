@@ -43,12 +43,15 @@ class _AuthScreenState extends State<AuthScreen> {
               // mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(
-                  height: 30,
+                  height: 40,
                 ),
-                Image.asset('lib/assets/images/logo_ver1.png',
+                Image.asset('lib/assets/images/Logo.png',
+                ),
+                const SizedBox(
+                  height: 50,
                 ),
                 const Text(
-                  'Welcome to MealDeal',
+                  'Welcome to MealDeal!',
                   style: TextStyle(
                       fontSize: 20,
                       fontFamily: 'Roboto',

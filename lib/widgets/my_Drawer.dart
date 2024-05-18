@@ -8,35 +8,45 @@ class MyDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: Colors.grey[200],
       child: Column(
         children: [
           DrawerHeader(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("lib/assets/images/logo_ver1.png"),
-                fit: BoxFit.cover,
-              ),
-              color: Colors.white,
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
             ),
-            child: Container(),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: FractionallySizedBox(
+                widthFactor: 0.8, // Adjust the width factor to control the size
+                child: Image.asset(
+                  "lib/assets/images/Logo.png",
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
           ),
+          SizedBox(height: 10,),
           ListTile(
             leading: const Icon(Icons.menu_book),
-            title: const Text('Menu'),
+            title: const Text('MENU',
+            style: TextStyle(
+              fontSize: 16
+            ),),
             onTap: () {
               Navigator.pushReplacementNamed(context, '/menu');
             },
           ),
           ListTile(
             leading: const Icon(Icons.history),
-            title: const Text('Orders History'),
+            title: const Text('ORDERS HISOTORY'),
             onTap: () {
               Navigator.pushReplacementNamed(context, '/orderHistory');
             },
           ),
           ListTile(
             leading: const Icon(Icons.settings),
-            title: const Text('Settings'),
+            title: const Text('SETTINGS'),
             onTap: () {
               Navigator.pushReplacementNamed(context, '/settings');
             },
@@ -47,7 +57,7 @@ class MyDrawer extends StatelessWidget {
           const Spacer(flex: 2),
           ListTile(
             leading: const Icon(Icons.logout),
-            title: const Text('Log out'),
+            title: const Text('LOG OUT'),
             onTap: () {
               FirebaseAuth.instance.signOut();
               Navigator.pushReplacementNamed(context, '/');
