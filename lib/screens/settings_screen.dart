@@ -137,6 +137,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         sectionName: "Email ",
                         onPressed: () => editField("email"),
                       ),
+                      const SizedBox(
+                        height: 40,
+                      ),
                     ],
                   ),
                 )
